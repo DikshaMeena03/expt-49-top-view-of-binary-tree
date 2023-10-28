@@ -1,0 +1,63 @@
+#include <bits/stdc++.h>
+using namespace std;
+class Node
+{
+    public :
+    int data;
+    Node *left;
+    Node *right;
+
+    Node(int x)
+    {
+        data = x;
+        left = right = NULL;
+    }
+};
+void Inorder_Traversal(Node *root,int width,int height, map<int,pair<int,int>> &m)
+{
+    if(root == NULL)
+    return;
+
+    Inorder_Traversal(root->left,width-1,height+1,m);
+
+   
+    if(m.find(width) == m.end())
+        m[width] = make_pair(root->data,height);
+    else if(m[width].second>height)
+        m[width] = make_pair(root->data,height);
+
+    Inorder_Traversal(root->right,width+1,height+1,m);
+}
+void Print_Top_View(Node *root)
+{
+    if(root ==  NULL)
+    return;
+    
+       map<int,pair<int,int>> m;
+
+   
+    Inorder_Traversal(root,0,0,m);
+
+    /* Traverse the map and print top view of the binary tree */
+    cout<<"Top View Nodes\n";
+    for(auto it : m)
+    cout<<it.second.first<<" ";
+}
+
+int main()
+{
+    Node *root = new Node(1);
+    root->left = new Node(2);
+    root->right = new Node(3);
+    root->right->right = new Node(7);
+    root->left->right = new Node(5);
+    root->left->right->right = new Node(9);
+    root->left->left = new Node(4);
+    root->left->left->left = new Node(8);
+
+    root->right->right->right = new Node(10);
+
+    Print_Top_View(root);
+
+    return 0;
+}
